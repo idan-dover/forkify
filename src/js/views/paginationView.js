@@ -1,9 +1,23 @@
-import View from "./View.js";
+import View from './View.js';
 
-import icons from "url:../../img/icons.svg";
+import icons from 'url:../../img/icons.svg';
 
 class PaginationView extends View {
   _parentEl = document.querySelector(`.pagination`);
+
+  addHandlerClick(handler) {
+    this._parentEl.addEventListener(`click`, function (e) {
+      const btn = e.target.closest(`.btn--inline`);
+
+      if (!btn) {
+        return;
+      }
+
+      const goToPage = +btn.dataset.goto;
+
+      handler(goToPage);
+    });
+  }
 
   _generateMarkup() {
     const currPage = this._data.page;
@@ -25,7 +39,7 @@ class PaginationView extends View {
       );
     }
     //Page 1 no other pages
-    return "";
+    return '';
   }
 
   _generateMarkupBtn(next = false, page) {
@@ -40,7 +54,9 @@ class PaginationView extends View {
       direction.arrow = `right`;
     }
     return `
-        <button class="btn--inline pagination__btn--${direction.to}">
+        <button data-goto="${
+          page + direction.value
+        }" class="btn--inline pagination__btn--${direction.to}">
           <svg class="search__icon">
             <use href="${icons}#icon-arrow-${direction.arrow}"></use>
           </svg>
