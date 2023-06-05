@@ -11,45 +11,42 @@ class PaginationView extends View {
     numPages = Math.ceil(numPages);
     //Page 1 and there are other pages
     if (currPage === 1 && numPages > 1) {
-      return `
-        <button class="btn--inline pagination__btn--next">
-            <span>Page ${currPage + 1}</span>
-            <svg class="search__icon">
-              <use href="${icons}#icon-arrow-right"></use>
-            </svg>
-        </button>
-        `;
+      return this._generateMarkupBtn(true, currPage);
     }
     //Last page
     if (currPage === numPages && numPages > 1) {
-      return `
-        <button class="btn--inline pagination__btn--prev">
-          <svg class="search__icon">
-            <use href="${icons}#icon-arrow-left"></use>
-          </svg>
-          <span>Page ${currPage - 1}</span>
-        </button>
-        `;
+      return this._generateMarkupBtn(false, currPage);
     }
     //Other page
     if (currPage < numPages) {
-      return `
-        <button class="btn--inline pagination__btn--prev">
-          <svg class="search__icon">
-            <use href="${icons}#icon-arrow-left"></use>
-          </svg>
-          <span>Page ${currPage - 1}</span>
-        </button>
-        <button class="btn--inline pagination__btn--next">
-            <span>Page ${currPage + 1}</span>
-            <svg class="search__icon">
-              <use href="${icons}#icon-arrow-right"></use>
-            </svg>
-        </button>
-        `;
+      return (
+        this._generateMarkupBtn(false, currPage) +
+        this._generateMarkupBtn(true, currPage)
+      );
     }
     //Page 1 no other pages
     return "";
+  }
+
+  _generateMarkupBtn(next = false, page) {
+    const direction = {
+      to: `prev`,
+      value: -1,
+      arrow: `left`,
+    };
+    if (next) {
+      direction.to = `next`;
+      direction.value = 1;
+      direction.arrow = `right`;
+    }
+    return `
+        <button class="btn--inline pagination__btn--${direction.to}">
+          <svg class="search__icon">
+            <use href="${icons}#icon-arrow-${direction.arrow}"></use>
+          </svg>
+          <span>Page ${page + direction.value}</span>
+        </button>
+    `;
   }
 }
 
