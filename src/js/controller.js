@@ -8,7 +8,6 @@ import addRecipeView from './views/addRecipeView.js';
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import { async } from 'regenerator-runtime';
 
 // https://forkify-api.herokuapp.com/v2
 
